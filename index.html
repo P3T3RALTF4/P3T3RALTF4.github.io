@@ -15,8 +15,13 @@
       font-family: Arial, sans-serif;
     }
 
+    .container {
+      display: flex;
+      gap: 2rem;
+    }
+
     .card {
-      background: rgba(255, 255, 255, 0.9);
+      background: rgba(255, 255, 255, 0.95);
       padding: 2rem;
       border-radius: 15px;
       width: 320px;
@@ -55,20 +60,6 @@
       background: #5563c1;
     }
 
-    p {
-      margin-top: 1rem;
-      font-size: 14px;
-      color: #555;
-    }
-
-    .toggle-btn {
-      background: none;
-      border: none;
-      color: #667eea;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
     @keyframes fadeIn {
       from { opacity: 0; transform: scale(0.9); }
       to { opacity: 1; transform: scale(1); }
@@ -77,49 +68,28 @@
 </head>
 <body>
 
-  <div class="card" id="authCard">
-    <h2 id="formTitle">Login</h2>
-    <form id="authForm">
-      <div id="nameField" style="display:none;">
-        <input type="text" placeholder="Full Name" />
-      </div>
-      <input type="text" placeholder="Username" required />
-      <input type="password" placeholder="Password" required />
-      <button type="submit" id="submitBtn">Login</button>
-    </form>
-    <p>
-      <span id="toggleText">Don’t have an account?</span>
-      <button class="toggle-btn" onclick="toggleForm()">Sign Up</button>
-    </p>
+  <div class="container">
+    <!-- Login Card -->
+    <div class="card">
+      <h2>Login</h2>
+      <form>
+        <input type="text" placeholder="Username" required />
+        <input type="password" placeholder="Password" required />
+        <button type="submit">Login</button>
+      </form>
+    </div>
+
+    <!-- Sign Up Card -->
+    <div class="card">
+      <h2>Sign Up</h2>
+      <form>
+        <input type="text" placeholder="Full Name" required />
+        <input type="text" placeholder="Username" required />
+        <input type="password" placeholder="Password" required />
+        <button type="submit">Create Account</button>
+      </form>
+    </div>
   </div>
-
-  <script>
-    let isLogin = true;
-
-    function toggleForm() {
-      const formTitle = document.getElementById("formTitle");
-      const nameField = document.getElementById("nameField");
-      const submitBtn = document.getElementById("submitBtn");
-      const toggleText = document.getElementById("toggleText");
-      const toggleBtn = document.querySelector(".toggle-btn");
-
-      isLogin = !isLogin;
-
-      if (isLogin) {
-        formTitle.textContent = "Login";
-        nameField.style.display = "none";
-        submitBtn.textContent = "Login";
-        toggleText.textContent = "Don’t have an account?";
-        toggleBtn.textContent = "Sign Up";
-      } else {
-        formTitle.textContent = "Sign Up";
-        nameField.style.display = "block";
-        submitBtn.textContent = "Create Account";
-        toggleText.textContent = "Already have an account?";
-        toggleBtn.textContent = "Login";
-      }
-    }
-  </script>
 
 </body>
 </html>
