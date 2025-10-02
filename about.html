@@ -23,6 +23,7 @@
       text-align: center;
       box-shadow: 0 10px 25px rgba(0,0,0,0.3);
       animation: fadeIn 0.7s ease-in-out;
+      position: relative;
     }
 
     h1 {
@@ -33,7 +34,7 @@
     ul {
       list-style: none;
       padding: 0;
-      margin: 0 0 2rem 0;
+      margin: 0 0 1rem 0;
     }
 
     li {
@@ -43,14 +44,17 @@
     }
 
     .back-btn {
+      position: absolute;
+      top: 15px;
+      left: 15px;
       display: inline-flex;
       align-items: center;
-      padding: 10px 15px;
+      padding: 8px 12px;
       border: none;
       border-radius: 8px;
       background: #667eea;
       color: white;
-      font-size: 16px;
+      font-size: 14px;
       font-weight: bold;
       cursor: pointer;
       text-decoration: none;
@@ -63,8 +67,8 @@
     }
 
     .arrow {
-      margin-right: 8px;
-      font-size: 18px;
+      margin-right: 6px;
+      font-size: 16px;
     }
 
     @keyframes fadeIn {
@@ -76,6 +80,9 @@
 <body>
 
   <div class="card">
+    <a href="home.html" class="back-btn">
+      <span class="arrow">&#8592;</span> Back
+    </a>
     <h1>About Us</h1>
     <ul>
       <li>Nguyễn Thái Dương</li>
@@ -83,9 +90,6 @@
       <li>Nguyễn Nhật Duy</li>
       <li>Trần Minh Dũng</li>
     </ul>
-    <a href="home.html" class="back-btn">
-      <span class="arrow">&#8592;</span> Back
-    </a>
   </div>
 
 </body>
