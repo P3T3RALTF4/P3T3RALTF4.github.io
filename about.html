@@ -1,1 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>About Us</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #667eea, #764ba2, #ff6ec7);
+      font-family: Arial, sans-serif;
+    }
 
+    .card {
+      background: white;
+      padding: 2rem 3rem;
+      border-radius: 15px;
+      width: 400px;
+      text-align: center;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+      animation: fadeIn 0.7s ease-in-out;
+    }
+
+    h1 {
+      margin-bottom: 1rem;
+      color: #333;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 2rem 0;
+    }
+
+    li {
+      font-size: 18px;
+      margin: 8px 0;
+      color: #444;
+    }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 8px;
+      background: #667eea;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.3s, transform 0.2s;
+    }
+
+    .back-btn:hover {
+      background: #5563c1;
+      transform: scale(1.05);
+    }
+
+    .arrow {
+      margin-right: 8px;
+      font-size: 18px;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <h1>About Us</h1>
+    <ul>
+      <li>Nguyễn Thái Dương</li>
+      <li>Lê Quốc Duy</li>
+      <li>Nguyễn Nhật Duy</li>
+      <li>Trần Minh Dũng</li>
+    </ul>
+    <a href="home.html" class="back-btn">
+      <span class="arrow">&#8592;</span> Back
+    </a>
+  </div>
+
+</body>
+</html>
