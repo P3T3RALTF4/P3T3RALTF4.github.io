@@ -1,1 +1,1 @@
-# P3T3RALTF4.github.io
+This website is used to calculate and store information about users relating to my project
