@@ -16,13 +16,12 @@
     }
 
     .card {
-      background: rgba(255, 255, 255, 0.95);
+      background: white; /* solid white so it’s very visible */
       padding: 2rem;
       border-radius: 15px;
       width: 320px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
       text-align: center;
-      animation: fadeIn 0.6s ease-in-out;
     }
 
     h2 {
@@ -30,7 +29,7 @@
       color: #333;
     }
 
-    input {
+    input, button {
       width: 100%;
       padding: 10px;
       margin: 8px 0;
@@ -39,26 +38,13 @@
     }
 
     button {
-      width: 100%;
-      padding: 10px;
-      margin-top: 10px;
-      border: none;
-      border-radius: 8px;
       background: #667eea;
       color: white;
-      font-size: 16px;
+      border: none;
       cursor: pointer;
-      transition: 0.3s;
     }
-
     button:hover {
       background: #5563c1;
-    }
-
-    p {
-      margin-top: 1rem;
-      font-size: 14px;
-      color: #555;
     }
 
     .toggle-btn {
@@ -67,11 +53,6 @@
       color: #667eea;
       font-weight: bold;
       cursor: pointer;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: scale(0.9); }
-      to { opacity: 1; transform: scale(1); }
     }
   </style>
 </head>
@@ -92,7 +73,6 @@
 
   <script>
     let isLogin = true;
-
     function toggleForm() {
       const formTitle = document.getElementById("formTitle");
       const submitBtn = document.getElementById("submitBtn");
@@ -100,7 +80,6 @@
       const toggleBtn = document.querySelector(".toggle-btn");
 
       isLogin = !isLogin;
-
       if (isLogin) {
         formTitle.textContent = "Login";
         submitBtn.textContent = "Login";
