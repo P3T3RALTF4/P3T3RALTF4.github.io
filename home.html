@@ -1,1 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Homepage</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #667eea, #764ba2, #ff6ec7);
+      font-family: Arial, sans-serif;
+    }
 
+    .card {
+      background: white;
+      padding: 3rem 2rem;
+      border-radius: 15px;
+      width: 360px;
+      text-align: center;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+      animation: fadeIn 0.7s ease-in-out;
+    }
+
+    h1 {
+      margin-bottom: 2rem;
+      color: #333;
+    }
+
+    .btn {
+      display: block;
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: bold;
+      background: #667eea;
+      color: white;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.2s;
+    }
+
+    .btn:hover {
+      background: #5563c1;
+      transform: scale(1.05);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <h1>Welcome</h1>
+    <button class="btn" onclick="goTo('exchange.html')">Exchange Points</button>
+    <button class="btn" onclick="goTo('leaderboard.html')">Leaderboard</button>
+    <button class="btn" onclick="goTo('about.html')">About Us</button>
+  </div>
+
+  <script>
+    function goTo(page) {
+      // replace with actual navigation logic
+      alert("Go to: " + page);
+      // window.location.href = page; // Uncomment to navigate
+    }
+  </script>
+
+</body>
+</html>
