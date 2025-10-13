@@ -1,3 +1,5 @@
+
+<!-- File: home.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,65 +7,294 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Homepage</title>
   <style>
-    body {
-      margin: 0;
-      height: 100vh;
-      display: flex;
+    body { 
+      margin:0; 
+      min-height:100vh; 
+      display:flex; 
+      align-items:center; 
+      justify-content:center;
+      background: linear-gradient(135deg,#667eea,#764ba2,#ff6ec7); 
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    .card { 
+      background: rgba(255, 255, 255, 0.95); 
+      padding: 3rem 2.5rem; 
+      border-radius: 20px; 
+      width: 450px; 
+      text-align:center; 
+      box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      animation: fadeIn .7s;
+    }
+    .btn { 
+      display:block; 
+      width:100%; 
+      padding:14px; 
+      margin:12px 0; 
+      border:none; 
+      border-radius:12px; 
+      font-size:16px; 
+      font-weight:600; 
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color:white; 
+      cursor:pointer; 
+      transition: all 0.3s ease;
+    }
+    .btn:hover{ 
+      background: linear-gradient(135deg, #5a6fd8, #6a4190);
+      transform: translateY(-2px);
+      box-shadow: 0 7px 14px rgba(0,0,0,0.1);
+    }
+    .profile { 
+      text-align:left; 
+      margin-bottom:1.5rem; 
+      padding:20px; 
+      border-radius:15px; 
+      border:1px solid #eee; 
+      display:flex; 
+      gap:15px; 
+      align-items:center; 
+      background: #f8f9fa;
+    }
+    .avatar { 
+      width:60px; 
+      height:60px; 
+      border-radius:50%; 
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      display:flex;
       align-items: center;
       justify-content: center;
-      background: linear-gradient(135deg, #667eea, #764ba2, #ff6ec7);
-      font-family: Arial, sans-serif;
-    }
-
-    .card {
-      background: white;
-      padding: 3rem 2rem;
-      border-radius: 15px;
-      width: 360px;
-      text-align: center;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-      animation: fadeIn 0.7s ease-in-out;
-    }
-
-    h1 {
-      margin-bottom: 2rem;
-      color: #333;
-    }
-
-    .btn {
-      display: block;
-      width: 100%;
-      padding: 12px;
-      margin: 10px 0;
-      border: none;
-      border-radius: 8px;
-      font-size: 16px;
-      font-weight: bold;
-      background: #667eea;
       color: white;
-      cursor: pointer;
-      transition: background 0.3s, transform 0.2s;
+      font-weight: bold;
+      font-size: 24px;
+      flex-shrink:0; 
     }
-
-    .btn:hover {
-      background: #5563c1;
-      transform: scale(1.05);
+    .profile-info { font-size:15px; }
+    .muted{ color:#666; font-size:14px; }
+    .small { font-size:13px; color:#444; }
+    .hidden { display: none; }
+    .points-display {
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #667eea;
+      margin: 5px 0;
     }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: scale(0.9); }
-      to { opacity: 1; transform: scale(1); }
+    .verification-warning {
+      background: #fff3cd;
+      border: 1px solid #ffeaa7;
+      color: #856404;
+      padding: 15px;
+      border-radius: 10px;
+      margin: 15px 0;
+      text-align: left;
+    }
+    .verification-warning h4 {
+      margin: 0 0 8px 0;
+      color: #856404;
+    }
+    @keyframes fadeIn{ 
+      from{opacity:0; transform:scale(.95);} 
+      to{opacity:1; transform:scale(1);} 
+    }
+    h1 {
+      color: #333;
+      margin-bottom: 1.5rem;
+    }
+    .action-buttons {
+      margin-top: 20px;
+      display: flex;
+      gap: 10px;
+    }
+    .secondary-btn {
+      background: #fff;
+      color: #333;
+      border: 1px solid #ddd;
+    }
+    .secondary-btn:hover {
+      background: #f5f5f5;
+    }
+    .danger-btn {
+      background: #ff6b6b;
+    }
+    .danger-btn:hover {
+      background: #ff5252;
+    }
+    .verified-badge {
+      color: #27ae60;
+      font-size: 14px;
+      margin-left: 5px;
     }
   </style>
 </head>
 <body>
-
   <div class="card">
-    <h1>Welcome</h1>
-    <button class="btn" onclick="window.location.href='exchange.html'">Exchange Points</button>
-    <button class="btn" onclick="window.location.href='leaderboard.html'">Leaderboard</button>
-    <button class="btn" onclick="window.location.href='about.html'">About Us</button>
+    <div id="profileArea" class="hidden">
+      <div class="profile">
+        <div id="avatar" class="avatar"></div>
+        <div class="profile-info">
+          <div id="displayName" style="font-weight:bold; font-size:18px;">Guest</div>
+          <div id="email" class="muted">-</div>
+          <div id="points" class="points-display">Points: 0</div>
+          <div id="uid" class="small muted"></div>
+        </div>
+      </div>
+      
+      <div id="verificationWarning" class="verification-warning hidden">
+        <h4>⚠️ Email Not Verified</h4>
+        <p>Please verify your email address to access all features. Check your inbox for the verification link.</p>
+        <button id="btnSendVerification" class="btn" style="margin-top: 10px; background: #e67e22;">Send Verification Email</button>
+      </div>
+    </div>
+
+    <h1 id="welcomeTitle">Welcome to Our App</h1>
+
+    <button class="btn" onclick="window.location.href='exchange.html'">🔄 Exchange Points</button>
+    <button class="btn" onclick="window.location.href='leaderboard.html'">🏆 Leaderboard</button>
+    <button class="btn" id="aboutBtn">ℹ️ About Us</button>
+
+    <div class="action-buttons">
+      <button id="btnLogin" class="btn secondary-btn">Login / Sign Up</button>
+      <button id="btnSignOut" class="btn danger-btn">Sign Out</button>
+    </div>
   </div>
 
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/11.0.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/11.0.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/11.0.0/firebase-firestore-compat.js"></script>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyA1MLXL3tNowDNrqkfAsg8effeET7Qvnhs",
+      authDomain: "garbage-ba403.firebaseapp.com",
+      projectId: "garbage-ba403",
+      storageBucket: "garbage-ba403.firebasestorage.app",
+      messagingSenderId: "718328741937",
+      appId: "1:718328741937:web:cbd1f5ff6cc3944ed19510",
+      measurementId: "G-PP6EH13BNJ",
+    };
+    
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    const $ = id => document.getElementById(id);
+    const profileArea = $("profileArea");
+    const avatar = $("avatar");
+    const displayName = $("displayName");
+    const emailEl = $("email");
+    const pointsEl = $("points");
+    const uidEl = $("uid");
+    const welcomeTitle = $("welcomeTitle");
+    const btnLogin = $("btnLogin");
+    const btnSignOut = $("btnSignOut");
+    const aboutBtn = $("aboutBtn");
+    const verificationWarning = $("verificationWarning");
+    const btnSendVerification = $("btnSendVerification");
+
+    // Hiển thị profile từ localStorage và kiểm tra xác thực
+    function showProfileFromLocal() {
+      const data = localStorage.getItem("simple_profile");
+      if (!data) {
+        profileArea.classList.add("hidden");
+        btnSignOut.style.display = "none";
+        btnLogin.style.display = "block";
+        welcomeTitle.textContent = "Welcome to Our App";
+        return;
+      }
+      
+      const p = JSON.parse(data);
+      profileArea.classList.remove("hidden");
+      btnSignOut.style.display = "block";
+      btnLogin.style.display = "none";
+      
+      // Hiển thị username thay vì email
+      const displayNameText = p.displayName || p.email || "User";
+      displayName.textContent = displayNameText;
+      emailEl.textContent = p.email || "";
+      pointsEl.textContent = "Points: " + (p.points || 0);
+      uidEl.textContent = "UID: " + (p.uid || "");
+      welcomeTitle.textContent = `Welcome, ${displayNameText}!`;
+      
+      // Hiển thị cảnh báo nếu email chưa xác thực
+      if (!p.emailVerified) {
+        verificationWarning.classList.remove("hidden");
+        welcomeTitle.textContent = `Welcome, ${displayNameText}! (Not Verified)`;
+      } else {
+        verificationWarning.classList.add("hidden");
+        welcomeTitle.innerHTML = `Welcome, ${displayNameText}! <span class="verified-badge">✓</span>`;
+      }
+      
+      // Tạo avatar từ chữ cái đầu
+      if (displayNameText) {
+        const firstLetter = displayNameText.charAt(0).toUpperCase();
+        avatar.textContent = firstLetter;
+      }
+      
+      if (p.photoURL) {
+        avatar.style.backgroundImage = `url(${p.photoURL})`;
+        avatar.style.backgroundSize = "cover";
+        avatar.textContent = "";
+      } else {
+        avatar.style.backgroundImage = "";
+      }
+    }
+
+    showProfileFromLocal();
+
+    // Gửi email xác thực
+    btnSendVerification.addEventListener("click", async () => {
+      try {
+        const user = auth.currentUser;
+        if (user && !user.emailVerified) {
+          await user.sendEmailVerification();
+          alert("Verification email sent! Please check your inbox.");
+        }
+      } catch (error) {
+        alert("Error sending verification email: " + error.message);
+      }
+    });
+
+    // Nút điều hướng
+    btnLogin.addEventListener("click", () => window.location.href = "Login.html");
+    aboutBtn.addEventListener("click", () => window.location.href = "about.html");
+
+    btnSignOut.addEventListener("click", async () => {
+      try {
+        await auth.signOut();
+      } catch (e) {
+        console.error(e);
+      } finally {
+        localStorage.removeItem("simple_profile");
+        showProfileFromLocal();
+        alert("You have been signed out.");
+      }
+    });
+
+    // Đồng bộ UI khi auth thay đổi
+    auth.onAuthStateChanged(async (user) => {
+      if (user) {
+        // Lấy thông tin user từ Firestore
+        const userDoc = await db.collection('users').doc(user.uid).get();
+        if (userDoc.exists) {
+          const userData = userDoc.data();
+          const userProfile = {
+            email: user.email || null,
+            uid: user.uid,
+            displayName: userData.displayName || userData.username || user.email,
+            photoURL: user.photoURL || null,
+            emailVerified: user.emailVerified,
+            points: userData.points || 0
+          };
+          localStorage.setItem("simple_profile", JSON.stringify(userProfile));
+          showProfileFromLocal();
+        }
+      } else {
+        localStorage.removeItem("simple_profile");
+        showProfileFromLocal();
+      }
+    });
+  </script>
 </body>
 </html>

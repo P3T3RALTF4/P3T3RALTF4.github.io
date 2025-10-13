@@ -1,119 +1,591 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Login / Sign Up</title>
   <style>
-    body {
-      margin: 0;
-      height: 100vh;
+    body { 
+      margin: 0; 
+      min-height: 100vh; /* Sửa từ height: 150vh */
+      display: flex; 
+      align-items: center; 
+      justify-content: center;
+      background: linear-gradient(135deg, #667eea, #764ba2, #ff6ec7); 
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      padding: 20px; /* Thêm padding cho mobile */
+    }
+    .card { 
+      background: rgba(255, 255, 255, 0.95); 
+      padding: 2rem; /* Giảm padding cho mobile */
+      border-radius: 20px; 
+      width: 100%;
+      max-width: 400px; /* Thêm max-width */
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2); 
+      text-align: center;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    h2 {
+      color: #333;
+      margin-bottom: 1.5rem;
+      font-weight: 600;
+    }
+    input, button { 
+      width: 100%; 
+      padding: 14px; 
+      margin: 10px 0; 
+      border-radius: 12px; 
+      border: 1px solid #ddd; 
+      font-size: 16px; 
+      box-sizing: border-box;
+      transition: all 0.3s ease;
+    }
+    input:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+    button{ 
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: #fff; 
+      border: none; 
+      cursor: pointer; 
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 7px 14px rgba(0, 0, 0, 0.1);
+    }
+    .secondary{ 
+      background: #fff; 
+      color: #333; 
+      border: 1px solid #ddd;
+    }
+    .secondary:hover {
+      background: #f5f5f5;
+      transform: translateY(-2px);
+    }
+    .muted{ color:#666; font-size:14px; } 
+    .error{ color:#e74c3c; background: #fdf0f0; padding: 10px; border-radius: 8px; border: 1px solid #f5c6cb;} 
+    .success{ color:#27ae60; background: #f0f9f0; padding: 10px; border-radius: 8px; border: 1px solid #c3e6c3;}
+    .warning{ color:#e67e22; background: #fef9e7; padding: 10px; border-radius: 8px; border: 1px solid #ffeaa7;}
+    .hidden{ display:none; } 
+    .fade-out{ opacity:0; transition:opacity .4s; }
+    .login-info {
+      background: #f8f9fa;
+      padding: 12px;
+      border-radius: 10px;
+      margin: 15px 0;
+      font-size: 14px;
+      color: #666;
+    }
+    .verification-info {
+      background: #e8f4fd;
+      padding: 15px;
+      border-radius: 10px;
+      margin: 15px 0;
+      text-align: left;
+    }
+    .verification-info h4 {
+      margin: 0 0 8px 0;
+      color: #2980b9;
+    }
+    .divider {
+      display: flex;
+      align-items: center;
+      margin: 20px 0;
+    }
+    .divider::before, .divider::after {
+      content: "";
+      flex: 1;
+      border-bottom: 1px solid #ddd;
+    }
+    .divider span {
+      padding: 0 15px;
+      color: #666;
+      font-size: 14px;
+    }
+    .social-login {
+      display: flex;
+      gap: 10px;
+      margin: 15px 0;
+    }
+    .social-btn {
+      flex: 1;
       display: flex;
       align-items: center;
       justify-content: center;
-      background: linear-gradient(135deg, #667eea, #764ba2, #ff6ec7);
-      font-family: Arial, sans-serif;
+      gap: 8px;
+      padding: 12px;
     }
-
-    .card {
-      background: white;
-      padding: 2rem;
-      border-radius: 15px;
-      width: 320px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-      text-align: center;
-      opacity: 1;
-      transition: opacity 0.4s ease;
-    }
-
-    h2 {
-      margin-bottom: 1rem;
+    .google-btn {
+      background: #fff;
       color: #333;
+      border: 1px solid #ddd;
     }
-
-    input, button {
-      width: 100%;
-      padding: 10px;
-      margin: 8px 0;
-      border-radius: 8px;
-      border: 1px solid #ccc;
+    .google-btn:hover {
+      background: #f8f9fa;
     }
-
-    button {
-      background: #667eea;
-      color: white;
-      border: none;
-      cursor: pointer;
-      transition: 0.3s;
+    .email-input {
+      display: none;
     }
-    button:hover {
-      background: #5563c1;
-    }
-
     .toggle-btn {
-      background: none;
-      border: none;
-      color: #667eea;
-      font-weight: bold;
-      cursor: pointer;
+      background: none !important;
+      border: none !important;
+      color: #667eea !important;
+      font-weight: bold !important;
+      cursor: pointer !important;
+      margin-left: 5px !important;
+      padding: 0 !important;
+      width: auto !important;
+      display: inline !important;
     }
-
-    /* Fade out class */
-    .fade-out {
-      opacity: 0;
+    .toggle-btn:hover {
+      transform: none !important;
+      box-shadow: none !important;
+      text-decoration: underline;
     }
   </style>
 </head>
 <body>
-
   <div class="card" id="authCard">
-    <h2 id="formTitle">Login</h2>
-    <form id="authForm">
-      <input type="text" placeholder="Username" required />
-      <input type="password" placeholder="Password" required />
-      <button type="submit" id="submitBtn">Login</button>
-    </form>
-    <p>
-      <span id="toggleText">Don’t have an account?</span>
-      <button class="toggle-btn" onclick="toggleForm(event)">Sign Up</button>
-    </p>
+    <div id="guestView">
+      <h2 id="formTitle">Welcome Back</h2>
+      
+      <div class="login-info">
+        💡 <strong>Tip:</strong> Use your username or email to login
+      </div>
+      
+      <form id="authForm">
+        <!-- Single input field that detects email or username -->
+        <input id="loginIdentifier" type="text" placeholder="Username or Email" autocomplete="username" required />
+        <input id="email" class="email-input" type="email" placeholder="Email" autocomplete="email" />
+        <input id="password" type="password" placeholder="Password (6+ characters)" autocomplete="current-password" required />
+        <button type="submit" id="submitBtn">Login</button>
+      </form>
+
+      <div id="verificationNotice" class="verification-info hidden">
+        <h4>📧 Email Verification Required</h4>
+        <p>We've sent a verification email to your inbox. Please check your email and verify your account before logging in.</p>
+        <button id="btnResendVerification" class="secondary" style="margin-top: 10px; width: auto; padding: 8px 15px;">Resend Verification Email</button>
+      </div>
+
+      <div class="divider"><span>or</span></div>
+
+      <div class="social-login">
+        <button type="button" id="btnGoogle" class="social-btn google-btn">
+          <svg width="18" height="18" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
+            <path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,11.045,8.955,20,20,20c11.045,0,20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"/>
+            <path fill="#FF3D00" d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"/>
+            <path fill="#4CAF50" d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z"/>
+            <path fill="#1976D2" d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"/>
+          </svg>
+          Google
+        </button>
+      </div>
+
+      <button type="button" id="btnReset" class="secondary">Forgot Password?</button>
+
+      <div id="msg" class="muted" style="margin:15px 0; min-height:20px;"></div>
+
+      <p class="muted" style="margin-top:15px;">
+        <span id="toggleText">Don't have an account?</span>
+        <button type="button" class="toggle-btn" id="toggleBtn">Sign Up</button>
+      </p>
+    </div>
+
+    <div id="userView" class="hidden">
+      <h2>Hello, <span id="userDisplayName"></span>! 👋</h2>
+      <p class="muted">Email: <span id="userEmail"></span></p>
+      <p class="muted">UID: <span id="userUid"></span></p>
+
+      <button type="button" id="btnVerifyEmail" class="secondary">Send Verification Email</button>
+      <button type="button" id="btnSignOut">Sign Out</button>
+
+      <div id="userMsg" class="muted" style="margin-top:15px;"></div>
+    </div>
   </div>
 
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/11.0.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/11.0.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/11.0.0/firebase-firestore-compat.js"></script>
+
   <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyA1MLXL3tNowDNrqkfAsg8effeET7Qvnhs",
+      authDomain: "garbage-ba403.firebaseapp.com",
+      projectId: "garbage-ba403",
+      storageBucket: "garbage-ba403.firebasestorage.app",
+      messagingSenderId: "718328741937",
+      appId: "1:718328741937:web:cbd1f5ff6cc3944ed19510",
+      measurementId: "G-PP6EH13BNJ",
+    };
+
+    // Khởi tạo Firebase
+    let app;
+    try {
+      app = firebase.initializeApp(firebaseConfig);
+    } catch (error) {
+      // Nếu app đã được khởi tạo, sử dụng app hiện có
+      app = firebase.app();
+    }
+    
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+    
+    // Đặt persistence cho auth
+    auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+      .catch(error => {
+        console.error("Error setting auth persistence:", error);
+      });
+
     let isLogin = true;
+    let pendingVerificationEmail = null;
+    
+    const $ = id => document.getElementById(id);
+    const card = $("authCard");
+    const formTitle = $("formTitle");
+    const submitBtn = $("submitBtn");
+    const toggleText = $("toggleText");
+    const toggleBtn = $("toggleBtn");
+    const msg = $("msg");
+    const loginIdentifierInput = $("loginIdentifier");
+    const emailInput = $("email");
+    const passwordInput = $("password");
+    const guestView = $("guestView");
+    const userView = $("userView");
+    const userEmail = $("userEmail");
+    const userDisplayName = $("userDisplayName");
+    const userUid = $("userUid");
+    const userMsg = $("userMsg");
+    const verificationNotice = $("verificationNotice");
+    const btnResendVerification = $("btnResendVerification");
 
-    function toggleForm(e) {
-      e.preventDefault(); // prevent form reload if button inside form
-      const card = document.getElementById("authCard");
-      const formTitle = document.getElementById("formTitle");
-      const submitBtn = document.getElementById("submitBtn");
-      const toggleText = document.getElementById("toggleText");
-      const toggleBtn = document.querySelector(".toggle-btn");
-
-      // Fade out first
+    function toggleForm(e){
+      if (e) e.preventDefault();
       card.classList.add("fade-out");
-
-      // Wait until fade-out is done (400ms), then swap text + fade in
       setTimeout(() => {
         isLogin = !isLogin;
-
         if (isLogin) {
-          formTitle.textContent = "Login";
+          formTitle.textContent = "Welcome Back";
           submitBtn.textContent = "Login";
-          toggleText.textContent = "Don’t have an account?";
+          toggleText.textContent = "Don't have an account?";
           toggleBtn.textContent = "Sign Up";
+          loginIdentifierInput.placeholder = "Username or Email";
+          passwordInput.setAttribute("autocomplete", "current-password");
+          verificationNotice.classList.add("hidden");
+          emailInput.classList.add("email-input");
+          emailInput.required = false;
         } else {
-          formTitle.textContent = "Sign Up";
-          submitBtn.textContent = "Create Account";
+          formTitle.textContent = "Create Account";
+          submitBtn.textContent = "Sign Up";
           toggleText.textContent = "Already have an account?";
           toggleBtn.textContent = "Login";
+          loginIdentifierInput.placeholder = "Choose a Username";
+          passwordInput.setAttribute("autocomplete", "new-password");
+          verificationNotice.classList.add("hidden");
+          emailInput.classList.remove("email-input");
+          emailInput.required = true;
         }
-
-        // Fade in
+        msg.textContent = "";
+        msg.className = "muted";
         card.classList.remove("fade-out");
-      }, 400);
+      }, 300);
     }
-  </script>
+    toggleBtn.addEventListener("click", toggleForm);
 
+    // Hàm để lấy email từ username
+    async function getEmailFromUsername(username) {
+      try {
+        const userDoc = await db.collection('users')
+          .where('username', '==', username.toLowerCase())
+          .limit(1)
+          .get();
+        
+        if (userDoc.empty) {
+          throw new Error('Username does not exist');
+        }
+        
+        return userDoc.docs[0].data().email;
+      } catch (error) {
+        throw new Error('Cannot find email for this username');
+      }
+    }
+
+    // Hàm để lấy username từ email
+    async function getUsernameFromEmail(email) {
+      try {
+        const userDoc = await db.collection('users')
+          .where('email', '==', email.toLowerCase())
+          .limit(1)
+          .get();
+        
+        if (userDoc.empty) {
+          throw new Error('Email does not exist');
+        }
+        
+        return userDoc.docs[0].data().username;
+      } catch (error) {
+        throw new Error('Cannot find username for this email');
+      }
+    }
+
+    // Kiểm tra xác thực email trước khi cho đăng nhập
+    async function checkEmailVerification(user) {
+      if (!user.emailVerified) {
+        await auth.signOut();
+        throw new Error('Please verify your email before logging in. Check your inbox for the verification link.');
+      }
+    }
+
+    $("authForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      msg.textContent = "";
+      msg.className = "muted";
+      const identifier = loginIdentifierInput.value.trim();
+      const password = passwordInput.value;
+      const email = emailInput.value.trim();
+      
+      try {
+        if (isLogin) {
+          // ĐĂNG NHẬP - Tự động phát hiện email hay username
+          if (!identifier) throw new Error("Please enter username or email.");
+          if (!password) throw new Error("Please enter password.");
+          
+          let loginEmail = identifier;
+          
+          // Nếu identifier không chứa @, coi như là username
+          if (!identifier.includes('@')) {
+            loginEmail = await getEmailFromUsername(identifier);
+          }
+          
+          const userCredential = await auth.signInWithEmailAndPassword(loginEmail, password);
+          const user = userCredential.user;
+          
+          // KIỂM TRA XÁC THỰC EMAIL
+          await checkEmailVerification(user);
+          
+          msg.textContent = "Login successful! Redirecting...";
+          msg.className = "success";
+          setTimeout(() => { window.location.href = "home.html"; }, 1000);
+        } else {
+          // ĐĂNG KÝ
+          if (!identifier) throw new Error("Please choose a username.");
+          if (!email) throw new Error("Please enter email.");
+          if (!password) throw new Error("Please enter password.");
+          if (password.length < 6) throw new Error("Password must be at least 6 characters.");
+
+          const username = identifier;
+          
+          // Kiểm tra username đã tồn tại chưa
+          const usernameCheck = await db.collection('users')
+            .where('username', '==', username.toLowerCase())
+            .limit(1)
+            .get();
+            
+          if (!usernameCheck.empty) {
+            throw new Error('Username is already taken');
+          }
+
+          // Tạo user với email và password
+          const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+          const user = userCredential.user;
+          
+          // Cập nhật profile với username
+          await user.updateProfile({
+            displayName: username
+          });
+
+          // GỬI EMAIL XÁC THỰC
+          await user.sendEmailVerification();
+          pendingVerificationEmail = email;
+
+          // Lưu thông tin username → email vào Firestore với điểm số = 0
+          await db.collection('users').doc(user.uid).set({
+            username: username.toLowerCase(),
+            email: email,
+            displayName: username,
+            points: 0, // Khởi tạo điểm = 0
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+          });
+          
+          // ĐĂNG XUẤT SAU KHI ĐĂNG KÝ
+          await auth.signOut();
+          
+          // HIỂN THỊ THÔNG BÁO XÁC THỰC
+          msg.textContent = "Account created successfully! Please verify your email to continue.";
+          msg.className = "warning";
+          verificationNotice.classList.remove("hidden");
+          
+          // ẨN FORM ĐĂNG KÝ
+          document.querySelector('form').style.display = 'none';
+          document.querySelector('.divider').style.display = 'none';
+          document.querySelector('.social-login').style.display = 'none';
+          $('btnReset').style.display = 'none';
+        }
+      } catch (err) {
+        if (err.code === 'auth/email-not-verified') {
+          msg.textContent = "Please verify your email before logging in. Check your inbox for the verification link.";
+          msg.className = "warning";
+        } else {
+          msg.textContent = err.message || "An error occurred. Please try again.";
+          msg.className = "error";
+        }
+      }
+    });
+
+    // Gửi lại email xác thực
+    btnResendVerification.addEventListener("click", async () => {
+      if (!pendingVerificationEmail) return;
+      
+      try {
+        // Tìm user bằng email
+        const user = await auth.fetchSignInMethodsForEmail(pendingVerificationEmail);
+        if (user.length > 0) {
+          // Gửi lại email xác thực
+          await auth.currentUser.sendEmailVerification();
+          msg.textContent = "Verification email sent again! Please check your inbox.";
+          msg.className = "success";
+        }
+      } catch (err) {
+        msg.textContent = "Error sending verification email: " + err.message;
+        msg.className = "error";
+      }
+    });
+
+    // Đăng nhập Google
+    $("btnGoogle").addEventListener("click", async () => {
+      msg.textContent = ""; msg.className = "muted";
+      try {
+        const provider = new firebase.auth.GoogleAuthProvider();
+        const result = await auth.signInWithPopup(provider);
+        const user = result.user;
+        
+        // Lưu thông tin user Google vào Firestore với điểm số = 0
+        if (user) {
+          await db.collection('users').doc(user.uid).set({
+            username: user.email.split('@')[0].toLowerCase(),
+            email: user.email,
+            displayName: user.displayName || user.email.split('@')[0],
+            photoURL: user.photoURL,
+            points: 0, // Khởi tạo điểm = 0
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+          }, { merge: true });
+        }
+        
+        msg.textContent = "Google login successful! Redirecting...";
+        msg.className = "success";
+        setTimeout(() => { window.location.href = "home.html"; }, 700);
+      } catch (err) {
+        msg.textContent = err.message || "Google login failed. Please try again."; 
+        msg.className = "error";
+      }
+    });
+
+    // Reset password
+    $("btnReset").addEventListener("click", async () => {
+      msg.textContent = ""; msg.className = "muted";
+      try {
+        const identifier = loginIdentifierInput.value.trim();
+        
+        if (!identifier) throw new Error("Please enter your username or email first.");
+        
+        let email = identifier;
+        
+        // Nếu identifier không chứa @, coi như là username
+        if (!identifier.includes('@')) {
+          email = await getEmailFromUsername(identifier);
+        }
+        
+        await auth.sendPasswordResetEmail(email);
+        msg.textContent = "Password reset email sent!";
+        msg.className = "success";
+      } catch (err) {
+        msg.textContent = err.message || "Error sending password reset email."; 
+        msg.className = "error";
+      }
+    });
+
+    // Xác minh email
+    $("btnVerifyEmail").addEventListener("click", async () => {
+      userMsg.textContent = ""; userMsg.className = "muted";
+      try {
+        const u = auth.currentUser;
+        if (u && !u.emailVerified) {
+          await u.sendEmailVerification();
+          userMsg.textContent = "Verification email sent!";
+          userMsg.className = "success";
+        } else {
+          userMsg.textContent = "Email already verified or you are not logged in.";
+          userMsg.className = "muted";
+        }
+      } catch (err) {
+        userMsg.textContent = err.message || "Error sending verification email.";
+        userMsg.className = "error";
+      }
+    });
+
+    // Đăng xuất
+    $("btnSignOut").addEventListener("click", async () => {
+      try {
+        await auth.signOut();
+      } catch (err) {
+        console.error("Error signing out:", err);
+      }
+    });
+
+    // Hiện UI khi auth thay đổi
+    auth.onAuthStateChanged(async (user) => {
+      if (user) {
+        // Lấy username từ Firestore nếu có
+        let displayName = user.displayName;
+        let userPoints = 0;
+        try {
+          const userDoc = await db.collection('users').doc(user.uid).get();
+          if (userDoc.exists) {
+            const userData = userDoc.data();
+            displayName = userData.username || userData.displayName || user.email || "(no name)";
+            userPoints = userData.points || 0;
+          }
+        } catch (error) {
+          console.error("Error getting user data:", error);
+        }
+        
+        userDisplayName.textContent = displayName;
+        userEmail.textContent = user.email || "(no email)";
+        userUid.textContent = user.uid;
+        userMsg.textContent = user.emailVerified ? "Email verified." : "Email not verified.";
+        userMsg.className = user.emailVerified ? "success" : "warning";
+        
+        localStorage.setItem("simple_profile", JSON.stringify({
+          email: user.email || null,
+          uid: user.uid,
+          displayName: displayName,
+          photoURL: user.photoURL || null,
+          emailVerified: user.emailVerified,
+          points: userPoints
+        }));
+        
+        guestView.classList.add("hidden");
+        userView.classList.remove("hidden");
+      } else {
+        localStorage.removeItem("simple_profile");
+        userView.classList.add("hidden");
+        guestView.classList.remove("hidden");
+        
+        // Hiển thị lại form khi đăng xuất
+        document.querySelector('form').style.display = 'block';
+        document.querySelector('.divider').style.display = 'flex';
+        document.querySelector('.social-login').style.display = 'flex';
+        $('btnReset').style.display = 'block';
+      }
+    });
+
+    // Khởi tạo form
+    toggleForm();
+  </script>
 </body>
 </html>

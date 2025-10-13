@@ -1,3 +1,4 @@
+<!-- File: about.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,85 +6,35 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>About Us</title>
   <style>
-    body {
-      margin: 0;
-      height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: linear-gradient(135deg, #667eea, #764ba2, #ff6ec7);
-      font-family: Arial, sans-serif;
-    }
-
-    .card {
-      background: white;
-      padding: 2rem 3rem;
-      border-radius: 15px;
-      width: 400px;
-      text-align: center;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-      animation: fadeIn 0.7s ease-in-out;
-      position: relative;
-    }
-
-    h1 {
-      margin-bottom: 1rem;
-      color: #333;
-    }
-
-    ul {
-      list-style: none;
-      padding: 0;
-      margin: 0 0 1rem 0;
-    }
-
-    li {
-      font-size: 18px;
-      margin: 8px 0;
-      color: #444;
-    }
-
-    .back-btn {
-      position: absolute;
-      top: 15px;
-      left: 15px;
-      display: inline-flex;
-      align-items: center;
-      padding: 8px 12px;
-      border: none;
-      border-radius: 8px;
-      background: #667eea;
-      color: white;
-      font-size: 14px;
-      font-weight: bold;
-      cursor: pointer;
-      text-decoration: none;
-      transition: background 0.3s, transform 0.2s;
-    }
-
-    .back-btn:hover {
-      background: #5563c1;
-      transform: scale(1.05);
-    }
-
-    .arrow {
-      margin-right: 6px;
-      font-size: 16px;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: scale(0.9); }
-      to { opacity: 1; transform: scale(1); }
-    }
+    body { margin:0; min-height:100vh; display:flex; align-items:center; justify-content:center;
+      background: linear-gradient(135deg,#667eea,#764ba2,#ff6ec7); font-family: Arial, sans-serif;}
+    .card { background:white; padding:2rem 3rem; border-radius:15px; width:420px; text-align:center; box-shadow:0 10px 25px rgba(0,0,0,0.3); }
+    h1 { margin-bottom:1rem; color:#333; }
+    ul{ list-style:none; padding:0; margin:0 0 1rem 0; }
+    li{ font-size:18px; margin:8px 0; color:#444; }
+    .back-btn { position:absolute; top:15px; left:15px; display:inline-flex; align-items:center; padding:8px 12px; border-radius:8px; background:#667eea; color:white; text-decoration:none;}
+    .profileBox { text-align:left; border:1px solid #eee; padding:12px; border-radius:10px; margin-bottom:12px; display:flex; gap:10px; align-items:center; }
+    .avatar { width:56px; height:56px; border-radius:50%; background:#ddd; flex-shrink:0; }
+    .muted{ color:#666; font-size:13px; }
   </style>
 </head>
 <body>
-
   <div class="card">
-    <a href="home.html" class="back-btn">
-      <span class="arrow">&#8592;</span> Back
-    </a>
+    <a href="home.html" class="back-btn">&#8592; Back</a>
     <h1>Team members</h1>
+
+    <div id="myProfile" class="hidden">
+      <div class="profileBox">
+        <div id="profAvatar" class="avatar"></div>
+        <div>
+          <div id="profName" style="font-weight:bold">Your name</div>
+          <div id="profEmail" class="muted">you@example.com</div>
+          <div id="profUid" class="muted" style="font-size:12px"></div>
+          <div id="profVerified" class="muted" style="font-size:12px"></div>
+        </div>
+      </div>
+    </div>
+
     <ul>
       <li>Nguyễn Thái Dương</li>
       <li>Lê Quốc Duy</li>
@@ -92,5 +43,69 @@
     </ul>
   </div>
 
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/11.0.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/11.0.0/firebase-auth-compat.js"></script>
+  <script>
+      const firebaseConfig = {
+        apiKey: "AIzaSyA1MLXL3tNowDNrqkfAsg8effeET7Qvnhs",
+        authDomain: "garbage-ba403.firebaseapp.com",
+        projectId: "garbage-ba403",
+        storageBucket: "garbage-ba403.firebasestorage.app",
+        messagingSenderId: "718328741937",
+        appId: "1:718328741937:web:cbd1f5ff6cc3944ed19510",
+        measurementId: "G-PP6EH13BNJ",
+      };
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    const $ = id => document.getElementById(id);
+    const myProfile = $("myProfile");
+    const profAvatar = $("profAvatar");
+    const profName = $("profName");
+    const profEmail = $("profEmail");
+    const profUid = $("profUid");
+    const profVerified = $("profVerified");
+
+    function showProfileFromLocal() {
+      const raw = localStorage.getItem("simple_profile");
+      if (!raw) {
+        myProfile.classList.add("hidden");
+        return;
+      }
+      const p = JSON.parse(raw);
+      myProfile.classList.remove("hidden");
+      profName.textContent = p.displayName || (p.email ? p.email.split('@')[0] : "User");
+      profEmail.textContent = p.email || "";
+      profUid.textContent = "UID: " + (p.uid || "");
+      profVerified.textContent = p.emailVerified ? "Email: Đã xác minh" : "Email: Chưa xác minh";
+      if (p.photoURL) {
+        profAvatar.style.backgroundImage = `url(${p.photoURL})`;
+        profAvatar.style.backgroundSize = "cover";
+      } else {
+        profAvatar.style.backgroundImage = "";
+      }
+    }
+
+    // Sync with auth changes too
+    auth.onAuthStateChanged(user => {
+      if (user) {
+        localStorage.setItem("simple_profile", JSON.stringify({
+          email: user.email || null,
+          uid: user.uid,
+          displayName: user.displayName || null,
+          photoURL: user.photoURL || null,
+          emailVerified: user.emailVerified
+        }));
+      } else {
+        // không xoá ngay — nhưng ta sẽ hide
+        // localStorage.removeItem("simple_profile");
+      }
+      showProfileFromLocal();
+    });
+
+    // show at load
+    showProfileFromLocal();
+  </script>
 </body>
 </html>

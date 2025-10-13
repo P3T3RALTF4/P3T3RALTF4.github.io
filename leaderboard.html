@@ -1,1 +1,242 @@
 
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Leaderboard</title>
+  <style>
+    body { 
+      margin:0; 
+      min-height:100vh; 
+      display:flex; 
+      align-items:center; 
+      justify-content:center;
+      background: linear-gradient(135deg,#667eea,#764ba2,#ff6ec7); 
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    .card { 
+      background: rgba(255, 255, 255, 0.95); 
+      padding: 2.5rem; 
+      border-radius: 20px; 
+      width: 500px; 
+      max-height: 80vh;
+      overflow-y: auto;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    h1 {
+      color: #333;
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+    .leaderboard-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .leaderboard-item {
+      display: flex;
+      align-items: center;
+      padding: 15px;
+      border-bottom: 1px solid #eee;
+      transition: all 0.3s ease;
+    }
+    .leaderboard-item:hover {
+      background: #f8f9fa;
+      border-radius: 10px;
+    }
+    .leaderboard-item:last-child {
+      border-bottom: none;
+    }
+    .rank {
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #667eea;
+      width: 40px;
+      text-align: center;
+    }
+    .top-three .rank {
+      font-size: 1.5rem;
+    }
+    .user-info {
+      flex: 1;
+      text-align: left;
+    }
+    .user-name {
+      font-weight: bold;
+      color: #333;
+    }
+    .user-points {
+      color: #666;
+      font-size: 0.9rem;
+    }
+    .top-three {
+      background: linear-gradient(135deg, #fff9e6, #fff3cd);
+      border-radius: 10px;
+      margin-bottom: 10px;
+      border: 2px solid #ffeaa7;
+    }
+    .top-three .rank {
+      color: #ffc107;
+    }
+    .current-user {
+      background: linear-gradient(135deg, #e8f4fd, #d1ecf1);
+      border: 2px solid #b8daff;
+      border-radius: 10px;
+    }
+    .medal {
+      font-size: 1.5rem;
+      margin-right: 10px;
+    }
+    .btn { 
+      display:block; 
+      width:100%; 
+      padding:14px; 
+      margin:12px 0; 
+      border:none; 
+      border-radius:12px; 
+      font-size:16px; 
+      font-weight:600; 
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color:white; 
+      cursor:pointer; 
+      transition: all 0.3s ease;
+    }
+    .btn:hover{ 
+      background: linear-gradient(135deg, #5a6fd8, #6a4190);
+      transform: translateY(-2px);
+      box-shadow: 0 7px 14px rgba(0,0,0,0.1);
+    }
+    .secondary-btn {
+      background: #fff;
+      color: #333;
+      border: 1px solid #ddd;
+    }
+    .secondary-btn:hover {
+      background: #f5f5f5;
+    }
+    .loading {
+      text-align: center;
+      color: #666;
+      padding: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>🏆 Leaderboard</h1>
+    
+    <div id="loadingMessage" class="loading">Loading leaderboard...</div>
+    
+    <ul class="leaderboard-list" id="leaderboardList">
+      <!-- Danh sách người dùng sẽ được thêm ở đây -->
+    </ul>
+
+    <button class="btn secondary-btn" onclick="window.location.href='home.html'">← Back to Home</button>
+    <button class="btn" onclick="window.location.href='exchange.html'">🔄 Exchange Points</button>
+  </div>
+
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/11.0.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/11.0.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/11.0.0/firebase-firestore-compat.js"></script>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyA1MLXL3tNowDNrqkfAsg8effeET7Qvnhs",
+      authDomain: "garbage-ba403.firebasestorage.app",
+      projectId: "garbage-ba403",
+      storageBucket: "garbage-ba403.firebasestorage.app",
+      messagingSenderId: "718328741937",
+      appId: "1:718328741937:web:cbd1f5ff6cc3944ed19510",
+      measurementId: "G-PP6EH13BNJ",
+    };
+    
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    const leaderboardList = document.getElementById('leaderboardList');
+    const loadingMessage = document.getElementById('loadingMessage');
+
+    let currentUser = null;
+
+    // Theo dõi trạng thái đăng nhập
+    auth.onAuthStateChanged(async (user) => {
+      if (user) {
+        currentUser = user;
+        await loadLeaderboard();
+      } else {
+        // Chưa đăng nhập, chuyển về trang login
+        window.location.href = 'Login.html';
+      }
+    });
+
+    // Load leaderboard
+    async function loadLeaderboard() {
+      try {
+        const querySnapshot = await db.collection('users')
+          .orderBy('points', 'desc')
+          .limit(20)
+          .get();
+
+        leaderboardList.innerHTML = '';
+        loadingMessage.style.display = 'none';
+
+        let rank = 1;
+        querySnapshot.forEach((doc) => {
+          const userData = doc.data();
+          const listItem = document.createElement('li');
+          
+          // Kiểm tra xem có phải user hiện tại không
+          const isCurrentUser = currentUser && doc.id === currentUser.uid;
+          
+          listItem.className = 'leaderboard-item';
+          if (rank <= 3) {
+            listItem.classList.add('top-three');
+          }
+          if (isCurrentUser) {
+            listItem.classList.add('current-user');
+          }
+
+          let medal = '';
+          if (rank === 1) medal = '🥇';
+          else if (rank === 2) medal = '🥈';
+          else if (rank === 3) medal = '🥉';
+
+          listItem.innerHTML = `
+            <div class="rank">
+              ${medal || rank}
+            </div>
+            <div class="user-info">
+              <div class="user-name">
+                ${userData.displayName || userData.username || 'Anonymous'} 
+                ${isCurrentUser ? ' (You)' : ''}
+              </div>
+              <div class="user-points">${userData.points || 0} points</div>
+            </div>
+          `;
+          
+          leaderboardList.appendChild(listItem);
+          rank++;
+        });
+
+        // Nếu không có user nào
+        if (querySnapshot.empty) {
+          leaderboardList.innerHTML = '<div class="loading">No users found</div>';
+        }
+
+      } catch (error) {
+        console.error('Error loading leaderboard:', error);
+        loadingMessage.textContent = 'Error loading leaderboard';
+      }
+    }
+
+    // Làm mới leaderboard mỗi 30 giây
+    setInterval(loadLeaderboard, 30000);
+  </script>
+</body>
+</html>
